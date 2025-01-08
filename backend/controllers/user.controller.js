@@ -16,7 +16,7 @@ export const registerUser = async (req, res) => {
         const user = await User.create({first_name, last_name, date_of_birth, gender, phone_number, email, password: hashPassword});
         return res.status(200).json({message: "user register successfully", user});
     } catch (error) {
-        console.log(error)
+        return res.status(500).json({message: "Internal Server error", error});
     }
 };
 
@@ -37,7 +37,7 @@ export const loginUser = async (req, res) => {
         res.cookie("token", token, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000})
         return res.status(200).json({message: "User LoggedIn Successfully!", user, token});
     } catch (error) {
-        console.log(error)
+        return res.status(500).json({message: "Internal Server error", error});
     }
 };
 
