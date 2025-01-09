@@ -24,6 +24,21 @@ export const fetchProduct = async (req, res) => {
     }
 };
 
+// update product
+export const updateProduct = async(req, res) => {
+    const {name, description, price, category, type } = req.body;
+    const {id} = req.params;
+    try {
+        const updateProduct = await Product.findByIdAndUpdate(id, {name, description, price, category, type}, {new: true});
+        if(!updateProduct) {
+            return res.status(400).json({message: "Product not Found!"});
+        }
+        return res.status(200).json({message: "Product updated", updateProduct});
+    } catch (error) {
+        return res.status(500).json({message: "Internal Server Error", error})
+    }
+};
+
 // delete product
 export const deleteProduct = async (req, res) => {
     const {id} = req.params;

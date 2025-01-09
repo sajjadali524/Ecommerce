@@ -4,7 +4,7 @@ import jwt from "jsonwebtoken";
 
 // register user
 export const registerUser = async (req, res) => {
-    const {first_name, last_name, date_of_birth, gender, phone_number, email, password} = req.body;
+    const {first_name, last_name, date_of_birth, gender, phone_number, email, password, role} = req.body;
     try {
         const existingUser = await User.findOne({email})
         if(existingUser) {
@@ -13,7 +13,7 @@ export const registerUser = async (req, res) => {
 
         const hashPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({first_name, last_name, date_of_birth, gender, phone_number, email, password: hashPassword});
+        const user = await User.create({first_name, last_name, date_of_birth, gender, phone_number, email, password: hashPassword, role});
         return res.status(200).json({message: "user register successfully", user});
     } catch (error) {
         return res.status(500).json({message: "Internal Server error", error});
@@ -33,7 +33,7 @@ export const loginUser = async (req, res) => {
             return res.status(400).json({message: "Email or Password is Incorrect"});
         }
 
-        const token = await jwt.sign({userId: user._id}, process.env.TOKEN_SECRET, {expiresIn: "1d"});
+        const token = await jwt.sign({userId: user._id, role: user.role}, process.env.TOKEN_SECRET, {expiresIn: "1d"});
         res.cookie("token", token, {httpOnly: true, maxAge: 24 * 60 * 60 * 1000})
         return res.status(200).json({message: "User LoggedIn Successfully!", user, token});
     } catch (error) {
