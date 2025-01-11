@@ -49,3 +49,18 @@ export const placeOrder = async (req, res) => {
         return res.status(500).json({message: "Intenal Server Error", error});
     }
 };
+
+// fetch orders (user)
+export const fetchMyOrders = async (req, res) => {
+    try {
+        const myOrders = await Order.find({userId: req.user.id});
+
+        if(!myOrders || myOrders.length === 0) {
+            return res.status(400).json({message: "you did not made any order"});
+        }
+
+        return res.status(200).json({message: "fetch all orders", myOrders});
+    } catch (error) {
+        return res.status(500).json({message: "Internal server error", error});
+    }
+};

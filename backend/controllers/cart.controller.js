@@ -53,9 +53,9 @@ export const addToCart = async (req, res) => {
 // fetch all product to cart (user)
 export const fetchAllProductToCart = async (req, res) => {
     try {
-        const fetchAllProduct = await Cart.find();
+        const fetchAllProduct = await Cart.find({ userId: req.user.id});
         
-        if(!fetchAllProduct) {
+        if(!fetchAllProduct || fetchAllProduct.length === 0) {
             return res.status(400).json({message: "Cart is empty please added some product"});
         };
         
