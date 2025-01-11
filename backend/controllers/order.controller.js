@@ -64,3 +64,18 @@ export const fetchMyOrders = async (req, res) => {
         return res.status(500).json({message: "Internal server error", error});
     }
 };
+
+// fetch orders all orders (admin)
+export const fetchAllOrdersAdmin = async (req, res) => {
+    try {
+        const order = await Order.find();
+
+        if(!order || order.length === 0) {
+            return res.status(200).json({message: "orders not found"});
+        }
+
+        return res.status(200).json({message: "all orders fetch", order});
+    } catch (error) {
+        return res.status(500).json({message: "Internal server error", error});
+    }
+};
