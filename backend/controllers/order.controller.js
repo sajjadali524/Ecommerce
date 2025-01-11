@@ -65,6 +65,16 @@ export const fetchMyOrders = async (req, res) => {
     }
 };
 
+// delete order from cart (user)
+export const deleteOrderFromCart = async (req, res) => {
+    const {id} = req.params;
+    try {
+        
+    } catch (error) {
+        return res.status(500).json({message: "Internal server error", error})
+    }
+};
+
 // fetch orders all orders (admin)
 export const fetchAllOrdersAdmin = async (req, res) => {
     try {
@@ -77,5 +87,24 @@ export const fetchAllOrdersAdmin = async (req, res) => {
         return res.status(200).json({message: "all orders fetch", order});
     } catch (error) {
         return res.status(500).json({message: "Internal server error", error});
+    }
+};
+
+// update order status (admin)
+export const updateOrderStatus = async (req, res) => {
+    const { paymentStatus } = req.body;
+    const {id} = req.params;
+    try {
+        const updateOrder = await Order.findOne({_id: id, userId: req.user.id});
+
+        if(!updateOrder || updateOrder.paymentStatus === "Delivered") {
+            return res.status(400).json({message: "order does not exist or Delivered"});
+        }
+        
+        updateOrder.paymentStatus = paymentStatus;
+        await updateOrder.save();
+        return res.status(200).json({message: "order status updated", updateOrder});
+    } catch (error) {
+        return res.status(500).json({message: "Internal server error", error})
     }
 };
