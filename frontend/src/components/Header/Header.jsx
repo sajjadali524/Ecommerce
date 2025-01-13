@@ -49,7 +49,7 @@ const Header = () => {
 
       {/* mobile view  */}
 
-      <div>
+      <div className="">
         <div
           className={`lg:hidden flex items-center justify-between py-5 px-3 ${
             isOpen ? "" : "shadow-lg"
@@ -89,13 +89,8 @@ const Header = () => {
           </div>
         </div>
 
-        <ul
-          className={`flex flex-col items-left gap-5 px-10 pt-5 bg-white shadow-lg py-20 transition-all duration-500 ease-in-out transform ${
-            isOpen
-              ? "translate-x-0 w-full opacity-100 visible"
-              : "translate-x-full w-0 opacity-0 invisible"
-          }`}
-        >
+        {isOpen && <ul
+          className="flex flex-col items-left gap-5 px-10 pt-5 bg-white shadow-lg py-20 transition-all duration-500 ease-in-out transform">
           {navLinks.map((link, index) => (
             <li key={index} onClick={() => setIsOpen(false)}>
               <NavLink
@@ -107,7 +102,7 @@ const Header = () => {
               </NavLink>
             </li>
           ))}
-        </ul>
+        </ul> }
       </div>
     </>
   );
