@@ -8,7 +8,7 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <>
-      <div className="lg:flex hidden items-center justify-between px-32 py-5 shadow-lg w-screen">
+      <div className="fixed top-0 left-0 z-50 bg-white lg:flex hidden items-center justify-between px-32 py-5 shadow-lg w-screen">
         <Link to="/home" className="font-[500] text-pink-600">
           Eco<sapn className="text-black">mmerce</sapn>
         </Link>
