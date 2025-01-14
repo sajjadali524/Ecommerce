@@ -1,10 +1,10 @@
 import { product } from "../constants/images";
-const LatestCollectionProducts = () => {
+const BestSellersProducts = () => {
   return (
-    <div className="lg:py-20 md:py-20 py-10 lg:px-32 md:px-32 px-3">
+    <div className="py-10 lg:px-32 md:px-32 px-3">
       <div className="lg:text-center md:text-center text-left space-y-2">
         <div className="flex items-center lg:justify-center md:justify-center justify-start gap-3">
-            <h1 className="font-semibold lg:text-[30px] md:text-[30px] text-[20px]">LATEST COLLECTIONS</h1>
+            <h1 className="font-semibold lg:text-[30px] md:text-[30px] text-[20px]">BEST SELLERS</h1>
             <span className="bg-black w-20 h-[3px]"></span>
         </div>
         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nulla, hic.</p>
@@ -56,55 +56,10 @@ const LatestCollectionProducts = () => {
                 <span className="font-semibold">$130</span>
             </div>
         </div>
-        <div className="cursor-pointer shadow-md pb-1 overflow-hidden">
-            <div className="overflow-hidden transition-all">
-                <img src={product} alt="image" className="hover:scale-110"/>
-            </div>
-            <div className="flex flex-col px-1 py-3 space-y-1">
-                <span className="text-[15px]">T-Shirt Product</span>
-                <span className="font-semibold">$130</span>
-            </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1 overflow-hidden">
-            <div className="overflow-hidden transition-all">
-                <img src={product} alt="image" className="hover:scale-110"/>
-            </div>
-            <div className="flex flex-col px-1 py-3 space-y-1">
-                <span className="text-[15px]">T-Shirt Product</span>
-                <span className="font-semibold">$130</span>
-            </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1 overflow-hidden">
-            <div className="overflow-hidden transition-all">
-                <img src={product} alt="image" className="hover:scale-110"/>
-            </div>
-            <div className="flex flex-col px-1 py-3 space-y-1">
-                <span className="text-[15px]">T-Shirt Product</span>
-                <span className="font-semibold">$130</span>
-            </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1 overflow-hidden">
-            <div className="overflow-hidden transition-all">
-                <img src={product} alt="image" className="hover:scale-110"/>
-            </div>
-            <div className="flex flex-col px-1 py-3 space-y-1">
-                <span className="text-[15px]">T-Shirt Product</span>
-                <span className="font-semibold">$130</span>
-            </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1 overflow-hidden">
-            <div className="overflow-hidden transition-all">
-                <img src={product} alt="image" className="hover:scale-110"/>
-            </div>
-            <div className="flex flex-col px-1 py-3 space-y-1">
-                <span className="text-[15px]">T-Shirt Product</span>
-                <span className="font-semibold">$130</span>
-            </div>
-        </div>
         
       </div>
     </div>
   )
 }
 
-export default LatestCollectionProducts;
+export default BestSellersProducts;

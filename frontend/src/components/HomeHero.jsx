@@ -1,10 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { homeHerobg1, homeHerobg2, homeHerobg3 } from "../constants/images.js";
 import { MdOutlineExpandLess } from "react-icons/md";
 
 const HomeHero = () => {
   const bgImages = [homeHerobg1, homeHerobg2, homeHerobg3];
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setCurrentIndex((nextIndex) =>
+        nextIndex === bgImages.length - 1 ? 0 : nextIndex + 1
+      );
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [currentIndex, bgImages.length]);
 
   const handlePrev = () => {
     setCurrentIndex((prevIndex) => prevIndex === 0 ? bgImages.length - 1 : prevIndex - 1)
