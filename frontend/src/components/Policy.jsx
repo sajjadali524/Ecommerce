@@ -4,7 +4,7 @@ import { RiCustomerService2Fill } from "react-icons/ri";
 
 const Policy = () => {
   return (
-    <div className="grid lg:grid-cols-3 md:grid-cols-3 grid-cols-1 lg:px-32 md:px-32 px-3 py-10 pt-20">
+    <div className="grid lg:grid-cols-3 md:grid-cols-3 grid-cols-1 lg:px-32 md:px-32 px-3 py-20">
 
       <div className="flex flex-col items-center">
         <RiExchangeFundsLine className="text-3xl font-semibold mb-5" />
