@@ -1,11 +1,19 @@
 import { navLinks } from "./headerLinks";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { cart, login, search, navbar } from "../../constants/images";
 import "../../index.css";
 import { useState } from "react";
+import SearchBox from "../SearchBox";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isSearchBoxVisible, setISSearchBoxVisible] = useState(false);
+  const location = useLocation();
+
+  const handleSearchBox = () => {
+    setISSearchBoxVisible(true)
+  };
+
   return (
     <>
       <div className="fixed top-0 left-0 z-50 bg-white lg:flex hidden items-center justify-between px-32 py-5 shadow-lg w-screen">
@@ -30,9 +38,9 @@ const Header = () => {
         </ul>
 
         <div className="flex items-center gap-3">
-          <button>
+          {location.pathname === "/collection" && <button onClick={handleSearchBox}>
             <img src={search} alt="image" className="w-6 cursor-pointer" />
-          </button>
+          </button> }
           <Link to="/login">
             <img src={login} alt="image" className="w-6" />
           </Link>
@@ -46,6 +54,9 @@ const Header = () => {
           </div>
         </div>
       </div>
+
+       {/* search box  */}
+      {isSearchBoxVisible && <SearchBox searchBoxClose={setISSearchBoxVisible} /> }
 
       {/* mobile view  */}
 
@@ -89,20 +100,21 @@ const Header = () => {
           </div>
         </div>
 
-        {isOpen && <ul
-          className="flex flex-col items-left gap-5 px-10 pt-5 bg-white shadow-lg py-20 transition-all duration-500 ease-in-out transform">
-          {navLinks.map((link, index) => (
-            <li key={index} onClick={() => setIsOpen(false)}>
-              <NavLink
-                to={link.path}
-                activeClassName="active"
-                className="font-[500]"
-              >
-                {link.title}
-              </NavLink>
-            </li>
-          ))}
-        </ul> }
+        {isOpen && (
+          <ul className="flex flex-col items-left gap-5 px-10 pt-5 bg-white shadow-lg py-20 transition-all duration-500 ease-in-out transform">
+            {navLinks.map((link, index) => (
+              <li key={index} onClick={() => setIsOpen(false)}>
+                <NavLink
+                  to={link.path}
+                  activeClassName="active"
+                  className="font-[500]"
+                >
+                  {link.title}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </>
   );
