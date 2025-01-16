@@ -7,15 +7,15 @@ const FilterCollections = () => {
           <h1 className="font-semibold">CATEGORIES</h1>
           <div className="flex items-center gap-2">
             <input type="checkbox" value="category" />
-            <label className="text-[14px]">MEN</label>
+            <label className="text-[14px] opacity-80">MEN</label>
           </div>
           <div className="flex items-center gap-2">
             <input type="checkbox" value="category" />
-            <label className="text-[14px]">WOMEN</label>
+            <label className="text-[14px] opacity-80">WOMEN</label>
           </div>
           <div className="flex items-center gap-2">
             <input type="checkbox" value="category" />
-            <label className="text-[14px]">KIDS</label>
+            <label className="text-[14px] opacity-80">KIDS</label>
           </div>
         </div>
 
@@ -23,15 +23,15 @@ const FilterCollections = () => {
           <h1 className="font-semibold">TYPES</h1>
           <div className="flex items-center gap-2">
             <input type="checkbox" value="type" />
-            <label className="text-[14px]">Topwear</label>
+            <label className="text-[14px] opacity-80">Topwear</label>
           </div>
           <div className="flex items-center gap-2">
             <input type="checkbox" value="type" />
-            <label className="text-[14px]">Bottomwear</label>
+            <label className="text-[14px] opacity-80">Bottomwear</label>
           </div>
           <div className="flex items-center gap-2">
             <input type="checkbox" value="type" />
-            <label className="text-[14px]">Winterwear</label>
+            <label className="text-[14px] opacity-80">Winterwear</label>
           </div>
         </div>
       </form>
