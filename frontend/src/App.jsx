@@ -3,11 +3,12 @@ import Header from "./components/Header/Header";
 import Router from "./router/Router";
 
 const App = () => {
+  const isAdmin = true;
   return (
     <>
-      <Header />
+      {isAdmin ? null : <Header /> }
       <Router />
-      <Footer />
+      {isAdmin ? null : <Footer /> }
     </>
   )
 }
