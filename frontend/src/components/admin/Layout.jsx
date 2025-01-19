@@ -11,7 +11,7 @@ const Layout = () => {
         <div className="lg:h-screen pt-20 lg:w-1/6 w-full lg:border-r border-b">
           <Sidebar />
         </div>
-        <div className="pt-20 w-full px-20">
+        <div className="pt-20 w-full lg:px-20 px-0 pb-10">
           <Outlet />
         </div>
       </div>

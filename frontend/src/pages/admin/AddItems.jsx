@@ -26,7 +26,7 @@ const AddItems = () => {
   };
 
   return (
-    <form className="pt-5 w-1/2 space-y-4">
+    <form className="lg:pt-5 p-0 lg:w-1/2 w-full space-y-4">
       <div className="space-y-2">
         <h1>Upload Image</h1>
         {selectedImage ? (
@@ -80,9 +80,9 @@ const AddItems = () => {
         </div>
       </div>
 
-      <div className="flex items-center gap-8">
+      <div className="flex items-center lg:gap-8 gap-3">
         <div className="flex flex-col space-y-1 w-1/2">
-          <label htmlFor="category">Product Category</label>
+          <label htmlFor="category">Category</label>
           <select className="border outline-none px-2 py-1 opacity-50">
             <option>Men</option>
             <option>Women</option>
@@ -102,7 +102,7 @@ const AddItems = () => {
           <input
             type="text"
             placeholder="25"
-            className="opacity-70 px-2 py-1 outline-none border w-1/2"
+            className="opacity-70 px-2 py-1 outline-none border lg:w-1/2 w-full"
           />
         </div>
       </div>
