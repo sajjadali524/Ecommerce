@@ -11,27 +11,39 @@ import ListItems from "../pages/admin/ListItems";
 import Orders from "../pages/admin/Orders";
 import Layout from "../components/admin/Layout";
 import PlaceOrder from "../pages/PlaceOrder";
+import PageNotFound from "../pages/PageNotFound";
 
 const Router = () => {
+  const isAdmin = Boolean(window.localStorage.getItem("admin"));
+
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/collection" element={<Collections />} />
-      <Route path="/product-detail" element={<ProductDetails />} />
-      <Route path="/cart" element={<Cart />} />
-      <Route path="/place-order" element={<PlaceOrder />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/login" element={<Login />} />
+      {/* Public Routes */}
+      {!isAdmin && (
+        <>
+          <Route path="/" element={<Home />} />
+          <Route path="/collection" element={<Collections />} />
+          <Route path="/product-detail" element={<ProductDetails />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/place-order" element={<PlaceOrder />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/*" element={<PageNotFound />} />
+        </>
+      )}
 
-      {/* admin  */}
-      <Route path="/admin" element={<Layout />}>
-        <Route path="dashboard" element={<AdminDashboard />} />
-        <Route path="add-items" element={<AddItems />} />
-        <Route path="list-items" element={<ListItems />} />
-        <Route path="orders" element={<Orders />} />
-      </Route>
+      {/* Admin Routes */}
+      {isAdmin && (
+        <Route path="/" element={<Layout />}>
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="add-items" element={<AddItems />} />
+          <Route path="list-items" element={<ListItems />} />
+          <Route path="orders" element={<Orders />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Route>
+      )}
     </Routes>
-  )
-}
+  );
+};
 
 export default Router;

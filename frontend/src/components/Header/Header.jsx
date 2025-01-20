@@ -4,14 +4,26 @@ import { cart, login, search, navbar } from "../../constants/images";
 import "../../index.css";
 import { useState } from "react";
 import SearchBox from "../SearchBox";
+import axios from "axios";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchBoxVisible, setISSearchBoxVisible] = useState(false);
   const location = useLocation();
+  const token = window.localStorage.getItem("token");
 
   const handleSearchBox = () => {
     setISSearchBoxVisible(true)
+  };
+
+  const logoutUser = async () => {
+    try {
+      await axios.post("http://localhost:8000/api/v1/user/logout", {}, {withCredentials: true})
+      window.localStorage.removeItem("token");
+      window.location.href = "/"
+    } catch (error) {
+      console.log(error)
+    }
   };
 
   return (
@@ -41,9 +53,10 @@ const Header = () => {
           {location.pathname === "/collection" && <button onClick={handleSearchBox}>
             <img src={search} alt="image" className="w-6 cursor-pointer" />
           </button> }
+          {token ? <button className="bg-slate-700 text-white px-4 rounded-md py-1" onClick={logoutUser}>Logout</button> :
           <Link to="/login">
             <img src={login} alt="image" className="w-6" />
-          </Link>
+          </Link> }
           <div className="relative">
             <Link to="/cart">
               <img src={cart} alt="image" className="w-6" />
