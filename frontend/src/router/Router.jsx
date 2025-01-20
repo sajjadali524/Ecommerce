@@ -10,6 +10,7 @@ import AddItems from "../pages/admin/AddItems";
 import ListItems from "../pages/admin/ListItems";
 import Orders from "../pages/admin/Orders";
 import Layout from "../components/admin/Layout";
+import PlaceOrder from "../pages/PlaceOrder";
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
       <Route path="/collection" element={<Collections />} />
       <Route path="/product-detail" element={<ProductDetails />} />
       <Route path="/cart" element={<Cart />} />
+      <Route path="/place-order" element={<PlaceOrder />} />
       <Route path="/register" element={<Register />} />
       <Route path="/login" element={<Login />} />
 
