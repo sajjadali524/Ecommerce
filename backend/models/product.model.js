@@ -21,9 +21,19 @@ const productSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    productImages: {
-        type: [String],
+    productImage: {
+        type: String,
         required: true
+    },
+    productSizes: {
+        type: [String],
+        required: true,
+        default: ""
+    },
+    bestSeller: {
+        type: Boolean,
+        required: true,
+        default: false
     }
 }, {timestamps: true});
 

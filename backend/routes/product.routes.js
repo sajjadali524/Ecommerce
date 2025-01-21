@@ -2,10 +2,11 @@ import express from "express";
 import { addProduct, deleteProduct, fetchAllProductUser, fetchProduct, productDetailsUser, updateProduct } from "../controllers/product.controller.js";
 import isAuthenticated from "../middlewares/auth.middleware.js";
 import hasRole from "../middlewares/checkRole.middleware.js";
+import singleUpload from "../config/multerConfig.js";
 const router = express.Router();
 
 // admin
-router.post("/add-product", isAuthenticated, hasRole(["admin"]), addProduct);
+router.post("/add-product", isAuthenticated, hasRole(["admin"]), singleUpload, addProduct);
 router.get("/admin/get-product", isAuthenticated, hasRole(["admin"]), fetchProduct);
 router.put("/update-product/:id", isAuthenticated, hasRole(["admin"]), updateProduct);
 router.delete("/delete-product/:id", isAuthenticated, hasRole(["admin"]), deleteProduct);

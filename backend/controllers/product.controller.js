@@ -1,11 +1,19 @@
 import { Product } from "../models/product.model.js";
+import { uploadFileToCloudinary } from "../config/cloudinaryConfig.js";
 
 // Add Product (admin)
 export const addProduct = async (req, res) => {
-    const {name, description, price, category, type} = req.body;
+    const {name, description, price, category, type, productSizes, bestSeller} = req.body;
     try {
-        const addProduct = await Product.create({name, description, price, category, type});
-        return res.status(200).json({message: "Product addes Successfully", addProduct});
+        const productImage = req.files.productImage[0];
+        if(!productImage) {
+            return res.status(400).json({message: "No image Found"});
+        }
+        const folderName = `Ecommerce/products/${name}`;
+        const uploadProductImage = await uploadFileToCloudinary(productImage, "image", folderName);
+        const product = new Product({productImage: uploadProductImage.secure_url, name, description, price, category, type, productSizes, bestSeller});
+        await product.save();
+        return res.status(200).json({message: "Product added Successfully", product});
     } catch (error) {
         return res.status(500).json({message: "Internal Server error", error});
     }
