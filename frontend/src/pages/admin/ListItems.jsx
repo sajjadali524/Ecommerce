@@ -1,37 +1,32 @@
-import { product } from "../../constants/images";
 import { RiEditBoxLine } from "react-icons/ri";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const ListItems = () => {
-  const products = [
-    {
-      id: 1,
-      image: product,
-      name: "Product 1",
-      category: "Men",
-      price: "$25",
-    },
-    {
-      id: 2,
-      image: product,
-      name: "Product 2",
-      category: "Women",
-      price: "$30",
-    },
-    {
-      id: 3,
-      image: product,
-      name: "Product 3",
-      category: "Kids",
-      price: "$20",
-    },
-  ];
+  const [allProduct, setAllProduct] = useState([]);
+  useEffect(() => {
+    const getAllProducts = async () => {
+      const response = await axios.get("http://localhost:8000/api/v1/product/admin/get-product", {withCredentials:true});
+      setAllProduct(response.data.fetchProduct)
+    };
+    getAllProducts();
+  }, []);
+
+  const deleteProduct = async (id) => {
+    try {
+      await axios.delete(`http://localhost:8000/api/v1/product/delete-product/${id}`, {withCredentials: true});
+      setAllProduct(allProduct.filter(product => product._id !== id));
+    } catch (error) {
+      console.log(error)
+    }
+  };
 
   return (
     <div className="lg:pt-5 pt-0 overflow-x-auto space-y-2 lg:w-full">
-      <h1>All Products List</h1>
+      {allProduct.length > 0 && <h1>All Products List</h1> }
 
-      <table className="w-full border-collapse border border-gray-200 text-left">
+      {allProduct.length > 0 ? <table className="w-full border-collapse border border-gray-200 text-left">
         {/* Table Header */}
         <thead className="bg-gray-100">
           <tr>
@@ -45,11 +40,11 @@ const ListItems = () => {
 
         {/* Table Body */}
         <tbody>
-          {products.map((product) => (
-            <tr key={product.id} className="hover:bg-gray-50">
+          {allProduct.map((product) => (
+            <tr key={product._id} className="hover:bg-gray-50">
               <td className="border border-gray-300 px-4 py-2">
                 <img
-                  src={product.image}
+                  src={product.productImage}
                   alt={product.name}
                   className="w-10 h-10 object-cover"
                 />
@@ -63,14 +58,14 @@ const ListItems = () => {
                 <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-400">
                   <RiEditBoxLine />
                 </button>
-                <button className="bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-400">
+                <button className="bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-400" onClick={() => deleteProduct(product._id)}>
                   <MdOutlineDeleteOutline />
                 </button>
               </td>
             </tr>
           ))}
         </tbody>
-      </table>
+      </table> : <h1>No Product Found</h1> }
     </div>
   )
 }

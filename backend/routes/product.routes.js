@@ -6,7 +6,7 @@ import singleUpload from "../config/multerConfig.js";
 const router = express.Router();
 
 // admin
-router.post("/add-product", isAuthenticated, hasRole(["admin"]), singleUpload, addProduct);
+router.post("/add-product", isAuthenticated, hasRole(["admin"]), singleUpload.single("productImage"), addProduct);
 router.get("/admin/get-product", isAuthenticated, hasRole(["admin"]), fetchProduct);
 router.put("/update-product/:id", isAuthenticated, hasRole(["admin"]), updateProduct);
 router.delete("/delete-product/:id", isAuthenticated, hasRole(["admin"]), deleteProduct);

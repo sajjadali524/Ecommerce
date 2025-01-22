@@ -1,17 +1,30 @@
 import { Product } from "../models/product.model.js";
-import { uploadFileToCloudinary } from "../config/cloudinaryConfig.js";
+import cloudinary from "../config/cloudinaryConfig.js";
 
 // Add Product (admin)
 export const addProduct = async (req, res) => {
     const {name, description, price, category, type, productSizes, bestSeller} = req.body;
+    if(!req.file) {
+        return res.status(400).json({message: "No image Found"});
+    }
     try {
-        const productImage = req.files.productImage[0];
-        if(!productImage) {
-            return res.status(400).json({message: "No image Found"});
-        }
-        const folderName = `Ecommerce/products/${name}`;
-        const uploadProductImage = await uploadFileToCloudinary(productImage, "image", folderName);
-        const product = new Product({productImage: uploadProductImage.secure_url, name, description, price, category, type, productSizes, bestSeller});
+        const result = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+                { folder: "Ecommerce/products" },
+                (error, result) => {
+                    if (error) {
+                        reject(new Error("Cloudinary upload failed"));
+                    } else {
+                        resolve(result);
+                    }
+                }
+            );
+            stream.end(req.file.buffer);
+        });
+
+        const formattedPrice = price.startsWith('$') ? price : `$${price.trim()}`;
+
+        const product = new Product({name, description, price: formattedPrice, category, type, productImage: result.secure_url, productSizes, bestSeller});
         await product.save();
         return res.status(200).json({message: "Product added Successfully", product});
     } catch (error) {

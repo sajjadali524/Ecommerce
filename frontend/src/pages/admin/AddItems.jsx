@@ -8,9 +8,10 @@ const AddItems = () => {
   const [formData, setFormData] = useState({
     name: "",
     description: "",
+    price: "",
     category: "",
     type: "",
-    price: "",
+    productImage: null,
     productSizes: [],
     bestSeller: false,
   });
@@ -24,7 +25,7 @@ const AddItems = () => {
     if (file) {
       const imageURL = URL.createObjectURL(file);
       setSelectedImage(imageURL);
-      setFormData({ ...formData, productImage: file });
+      setFormData({ ...formData, productImage: event.target.files[0] });
     }
   };
 
@@ -38,7 +39,7 @@ const AddItems = () => {
 
   const handleUserInput = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
+      setFormData({ ...formData, [name]: type === "checkbox" ? checked : value });
   };
   
   const handleRemoveImage = () => {
@@ -47,32 +48,30 @@ const AddItems = () => {
       setSelectedImage(null);
     }
   };
-  
+
   const addProduct = async (e) => {
     e.preventDefault();
+    const data = new FormData();
+        Object.keys(formData).forEach((key) => {
+            data.append(key, formData[key]);
+        });
     try {
-      const data = new FormData();
-      for(const key in formData) {
-        data.append(key, formData[key])
-      };
-
-      for (let pair of data.entries()) {
-        console.log(pair[0] + ": " + pair[1]);
-      }
-      
-      const res = await axios.post(
+      await axios.post(
         "http://localhost:8000/api/v1/product/add-product",
         data,
         {
           withCredentials: true,
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
         }
       );
-      console.log(res.data);
+      window.location.href = "/add-items";
     } catch (error) {
-      console.error("Error adding product:", error.response?.data || error);
+      console.log(error);
     }
   };
+  
 
   return (
     <form className="lg:pt-5 p-0 lg:w-1/2 w-full space-y-4" onSubmit={addProduct}>
@@ -171,7 +170,7 @@ const AddItems = () => {
         <div className="flex flex-col space-y-1">
           <label htmlFor="price">Price</label>
           <input
-            type="number"
+            type="text"
             name="price"
             placeholder="Enter price"
             className="opacity-70 px-2 py-1 outline-none border lg:w-1/2 w-full"
