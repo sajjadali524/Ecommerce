@@ -1,7 +1,25 @@
+import { useParams } from "react-router-dom";
 import RelatedProducts from "../components/RelatedProducts";
 import { product } from "../constants/images";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const ProductDetails = () => {
+  const [productDetail, setProductDetail] = useState([]);
+  const { id } = useParams();
+  useEffect(() => {
+    const getProductDetail = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/product/product-detail/${id}`
+        );
+        setProductDetail(response.data.product);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getProductDetail();
+  }, [productDetail]);
   return (
     <>
       <div className="lg:flex block gap-10 lg:px-32 md:px-32 px-3 mt-32">

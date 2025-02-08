@@ -1,6 +1,23 @@
-import { product } from "../constants/images";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
 const CollectionsProductsCard = () => {
+  const [allproducts, setAllProducts] = useState([]);
+  useEffect(() => {
+    const fetchAllProducts = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/v1/product/get-all-products"
+        );
+        setAllProducts(response.data.products);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchAllProducts();
+  }, [allproducts]);
+
   return (
     <div className="w-full lg:py-0 md:py-0 py-10 lg:mt-28 md:mt-28 mt-0">
       <div className="flex items-center justify-between">
@@ -22,78 +39,27 @@ const CollectionsProductsCard = () => {
 
       {/* products  */}
       <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2 gap-5 pt-10">
-        <div className="cursor-pointer shadow-md pb-1">
-          <div className="overflow-hidden transition-all">
-            <img src={product} alt="image" className="hover:scale-110" />
-          </div>
-          <div className="flex flex-col px-1 py-3 space-y-1">
-            <span className="text-[15px]">T-Shirt Product</span>
-            <span className="font-semibold">$130</span>
-          </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1">
-          <div className="overflow-hidden transition-all">
-            <img src={product} alt="image" className="hover:scale-110" />
-          </div>
-          <div className="flex flex-col px-1 py-3 space-y-1">
-            <span className="text-[15px]">T-Shirt Product</span>
-            <span className="font-semibold">$130</span>
-          </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1">
-          <div className="overflow-hidden transition-all">
-            <img src={product} alt="image" className="hover:scale-110" />
-          </div>
-          <div className="flex flex-col px-1 py-3 space-y-1">
-            <span className="text-[15px]">T-Shirt Product</span>
-            <span className="font-semibold">$130</span>
-          </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1">
-          <div className="overflow-hidden transition-all">
-            <img src={product} alt="image" className="hover:scale-110" />
-          </div>
-          <div className="flex flex-col px-1 py-3 space-y-1">
-            <span className="text-[15px]">T-Shirt Product</span>
-            <span className="font-semibold">$130</span>
-          </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1">
-          <div className="overflow-hidden transition-all">
-            <img src={product} alt="image" className="hover:scale-110" />
-          </div>
-          <div className="flex flex-col px-1 py-3 space-y-1">
-            <span className="text-[15px]">T-Shirt Product</span>
-            <span className="font-semibold">$130</span>
-          </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1">
-          <div className="overflow-hidden transition-all">
-            <img src={product} alt="image" className="hover:scale-110" />
-          </div>
-          <div className="flex flex-col px-1 py-3 space-y-1">
-            <span className="text-[15px]">T-Shirt Product</span>
-            <span className="font-semibold">$130</span>
-          </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1">
-          <div className="overflow-hidden transition-all">
-            <img src={product} alt="image" className="hover:scale-110" />
-          </div>
-          <div className="flex flex-col px-1 py-3 space-y-1">
-            <span className="text-[15px]">T-Shirt Product</span>
-            <span className="font-semibold">$130</span>
-          </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1">
-          <div className="overflow-hidden transition-all">
-            <img src={product} alt="image" className="hover:scale-110" />
-          </div>
-          <div className="flex flex-col px-1 py-3 space-y-1">
-            <span className="text-[15px]">T-Shirt Product</span>
-            <span className="font-semibold">$130</span>
-          </div>
-        </div>
+        {allproducts.map((item, index) => {
+          return (
+            <Link
+              to={`/product-detail/${item._id}`}
+              key={index}
+              className="cursor-pointer shadow-md pb-1"
+            >
+              <div className="overflow-hidden transition-all">
+                <img
+                  src={item.productImage}
+                  alt="image"
+                  className="hover:scale-110"
+                />
+              </div>
+              <div className="flex flex-col px-1 py-3 space-y-1">
+                <span className="text-[15px]">{item.name}</span>
+                <span className="font-semibold">{item.price}</span>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

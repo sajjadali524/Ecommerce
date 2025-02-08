@@ -1,5 +1,22 @@
-import { product } from "../constants/images";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 const BestSellersProducts = () => {
+    const [bestSeller, setBestSeller] = useState([]);
+  useEffect(() => {
+    const getLatestCollections = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:8000/api/v1/product/get-bestseller-product"
+        );
+        setBestSeller(response.data.products);
+        console.log(bestSeller)
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getLatestCollections();
+  }, [bestSeller]);
   return (
     <div className="py-10 lg:px-32 md:px-32 px-3">
       <div className="lg:text-center md:text-center text-left space-y-2">
@@ -11,51 +28,23 @@ const BestSellersProducts = () => {
       </div>
 
       <div className="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-5 pt-10">
-        <div className="cursor-pointer shadow-md pb-1">
-            <div className="overflow-hidden transition-all">
-                <img src={product} alt="image" className="hover:scale-110"/>
+      {bestSeller.map((item, index) => {
+          return (
+            <div key={index} className="cursor-pointer shadow-md pb-1">
+              <div className="overflow-hidden transition-all">
+                <img
+                  src={item.productImage}
+                  alt="image"
+                  className="hover:scale-110"
+                />
+              </div>
+              <div className="flex flex-col px-1 py-3 space-y-1">
+                <span className="text-[15px]">{item.name}</span>
+                <span className="font-semibold">{item.price}</span>
+              </div>
             </div>
-            <div className="flex flex-col px-1 py-3 space-y-1">
-                <span className="text-[15px]">T-Shirt Product</span>
-                <span className="font-semibold">$130</span>
-            </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1 overflow-hidden">
-            <div className="overflow-hidden transition-all">
-                <img src={product} alt="image" className="hover:scale-110"/>
-            </div>
-            <div className="flex flex-col px-1 py-3 space-y-1">
-                <span className="text-[15px]">T-Shirt Product</span>
-                <span className="font-semibold">$130</span>
-            </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1 overflow-hidden">
-            <div className="overflow-hidden transition-all">
-                <img src={product} alt="image" className="hover:scale-110"/>
-            </div>
-            <div className="flex flex-col px-1 py-3 space-y-1">
-                <span className="text-[15px]">T-Shirt Product</span>
-                <span className="font-semibold">$130</span>
-            </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1 overflow-hidden">
-            <div className="overflow-hidden transition-all">
-                <img src={product} alt="image" className="hover:scale-110"/>
-            </div>
-            <div className="flex flex-col px-1 py-3 space-y-1">
-                <span className="text-[15px]">T-Shirt Product</span>
-                <span className="font-semibold">$130</span>
-            </div>
-        </div>
-        <div className="cursor-pointer shadow-md pb-1 overflow-hidden">
-            <div className="overflow-hidden transition-all">
-                <img src={product} alt="image" className="hover:scale-110"/>
-            </div>
-            <div className="flex flex-col px-1 py-3 space-y-1">
-                <span className="text-[15px]">T-Shirt Product</span>
-                <span className="font-semibold">$130</span>
-            </div>
-        </div>
+          );
+        })}
         
       </div>
     </div>

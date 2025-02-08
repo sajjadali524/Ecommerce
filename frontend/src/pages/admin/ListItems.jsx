@@ -1,4 +1,3 @@
-import { RiEditBoxLine } from "react-icons/ri";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -12,6 +11,8 @@ const ListItems = () => {
     };
     getAllProducts();
   }, []);
+
+  console.log(allProduct)
 
   const deleteProduct = async (id) => {
     try {
@@ -55,9 +56,6 @@ const ListItems = () => {
               </td>
               <td className="border border-gray-300 px-4 py-2">{product.price}</td>
               <td className="border border-gray-300 px-4 py-2">
-                <button className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-400">
-                  <RiEditBoxLine />
-                </button>
                 <button className="bg-red-500 text-white px-3 py-1 rounded ml-2 hover:bg-red-400" onClick={() => deleteProduct(product._id)}>
                   <MdOutlineDeleteOutline />
                 </button>

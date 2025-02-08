@@ -1,5 +1,5 @@
 import express from "express";
-import { addProduct, deleteProduct, fetchAllProductUser, fetchProduct, productDetailsUser, updateProduct } from "../controllers/product.controller.js";
+import { addProduct, deleteProduct, fetchAllProductUser, fetchProduct, getAllProducts, getBestSellerProductsOnly, getLatestCollectionProduct, productDetailsUser, updateProduct } from "../controllers/product.controller.js";
 import isAuthenticated from "../middlewares/auth.middleware.js";
 import hasRole from "../middlewares/checkRole.middleware.js";
 import singleUpload from "../config/multerConfig.js";
@@ -13,6 +13,11 @@ router.delete("/delete-product/:id", isAuthenticated, hasRole(["admin"]), delete
 
 // user
 router.get("/get-product", isAuthenticated, hasRole(["user"]), fetchAllProductUser);
-router.get("/get-product/:id", isAuthenticated, hasRole(["user"]), productDetailsUser);
+router.get("/product-detail/:id", productDetailsUser);
+
+//without login
+router.get("/get-latestcollection-product", getLatestCollectionProduct);
+router.get("/get-bestseller-product", getBestSellerProductsOnly);
+router.get("/get-all-products", getAllProducts);
 
 export default router;

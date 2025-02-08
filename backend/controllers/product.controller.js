@@ -100,3 +100,42 @@ export const productDetailsUser = async (req, res) => {
         return res.status(500).json({message: "Internal Server error", error});
     }
 };
+
+// get all product without user and admin
+export const getLatestCollectionProduct = async (req, res) => {
+    try {
+        const products = await Product.find().sort({ createdAt: -1 }).limit(10);
+        if(products.length === 0) {
+            return res.status(404).json({message: "Product not found"})
+        }
+        return res.status(200).json({message: "All product Fetched", products})
+    } catch (error) {
+        return res.status(500).json({message: "Internal Server error", error});
+    }
+};
+
+// get bestSelller Products without login
+export const getBestSellerProductsOnly = async (req, res) => {
+    try {
+        const products = await Product.find({bestSeller: true});
+        if(products.length === 0) {
+            return res.status(404).json({message: "Product not found"})
+        }
+        return res.status(200).json({message: "All product Fetched", products})
+    } catch (error) {
+        return res.status(500).json({message: "Internal Server error", error});
+    }
+};
+
+// get all products a to z
+export const getAllProducts = async (req, res) => {
+    try {
+        const products = await Product.find();
+        if(products.length === 0) {
+            return res.status(404).json({message: "Product not found"})
+        }
+        return res.status(200).json({message: "All product Fetched", products})
+    } catch (error) {
+        return res.status(500).json({message: "Internal Server error", error});
+    }
+}
