@@ -28,7 +28,7 @@ const productSchema = new mongoose.Schema({
     productSizes: {
         type: [String],
         required: true,
-        default: ""
+        default: []
     },
     bestSeller: {
         type: Boolean,

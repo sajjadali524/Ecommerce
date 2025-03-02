@@ -3,7 +3,8 @@ import cloudinary from "../config/cloudinaryConfig.js";
 
 // Add Product (admin)
 export const addProduct = async (req, res) => {
-    const {name, description, price, category, type, productSizes, bestSeller} = req.body;
+    const {name, description, price, category, type, bestSeller} = req.body;
+    const productSizes = req.body.productSizes.split(',').map(size => size.trim());
     if(!req.file) {
         return res.status(400).json({message: "No image Found"});
     }
@@ -24,7 +25,7 @@ export const addProduct = async (req, res) => {
 
         const formattedPrice = price.startsWith('$') ? price : `$${price.trim()}`;
 
-        const product = new Product({name, description, price: formattedPrice, category, type, productImage: result.secure_url, productSizes, bestSeller});
+        const product = new Product({name, description, price: formattedPrice, category, type, productImage: result.secure_url, productSizes: productSizes, bestSeller});
         await product.save();
         return res.status(200).json({message: "Product added Successfully", product});
     } catch (error) {
@@ -89,9 +90,9 @@ export const fetchAllProductUser = async (req, res) => {
 
 // get product details (user)
 export const productDetailsUser = async (req, res) => {
-    const {id} = req.params.id;
+    const {id} = req.params;
     try {
-        const product = await Product.findOne(id);
+        const product = await Product.findById(id);
         if(!product) {
             return res.status(400).json({message: "product not found"})
         }
