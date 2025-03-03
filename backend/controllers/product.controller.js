@@ -88,15 +88,19 @@ export const fetchAllProductUser = async (req, res) => {
     }
 };
 
-// get product details (user)
+// get product details (user) and related product as well
 export const productDetailsUser = async (req, res) => {
     const {id} = req.params;
     try {
         const product = await Product.findById(id);
         if(!product) {
             return res.status(400).json({message: "product not found"})
-        }
-        return res.status(200).json({message: "product details page showing", product})
+        };
+
+        // get related products
+        const relatedProduct = await Product.find({category: product.category, _id: {$ne: product._id}}).sort({createdAt: -1}).limit(5);
+
+        return res.status(200).json({message: "product details page showing", product, relatedProduct})
     } catch (error) {
         return res.status(500).json({message: "Internal Server error", error});
     }
@@ -118,7 +122,7 @@ export const getLatestCollectionProduct = async (req, res) => {
 // get bestSelller Products without login
 export const getBestSellerProductsOnly = async (req, res) => {
     try {
-        const products = await Product.find({bestSeller: true});
+        const products = await Product.find({bestSeller: true}).sort({createdAt: -1}).limit(5);
         if(products.length === 0) {
             return res.status(404).json({message: "Product not found"})
         }
@@ -131,7 +135,7 @@ export const getBestSellerProductsOnly = async (req, res) => {
 // get all products a to z
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find();
+        const products = await Product.find().sort({createdAt: -1});
         if(products.length === 0) {
             return res.status(404).json({message: "Product not found"})
         }
@@ -139,4 +143,20 @@ export const getAllProducts = async (req, res) => {
     } catch (error) {
         return res.status(500).json({message: "Internal Server error", error});
     }
-}
+};
+
+// get all products a to z filter by category
+export const filterProductByCategory = async (req, res) => {
+    const { category } = req.query;
+    try {
+        const filter = category ? {category: {$regex: new RegExp(category, "i")}} : {};
+        const products = await Product.find(filter).sort({createdAt: -1});
+        if (!products.length) {
+            return res.status(404).json({ message: "Products not found" });
+        }
+        return res.status(200).json({ message: "Products filtered", products });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: "Internal Server error" });
+    }
+};

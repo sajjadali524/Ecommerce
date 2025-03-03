@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const LatestCollectionProducts = () => {
   const [latestProduct, setLatestProduct] = useState([]);
@@ -16,6 +17,7 @@ const LatestCollectionProducts = () => {
     };
     getLatestCollections();
   }, []);
+
   return (
     <div className="lg:py-20 md:py-20 py-10 lg:px-32 md:px-32 px-3">
       <div className="lg:text-center md:text-center text-left space-y-2">
@@ -33,7 +35,7 @@ const LatestCollectionProducts = () => {
       <div className="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-5 pt-10">
         {latestProduct.map((item, index) => {
           return (
-            <div key={index} className="cursor-pointer shadow-md pb-1">
+            <Link to={`/product-detail/${item._id}`} key={index} className="cursor-pointer shadow-md pb-1">
               <div className="overflow-hidden transition-all">
                 <img
                   src={item.productImage}
@@ -45,7 +47,7 @@ const LatestCollectionProducts = () => {
                 <span className="text-[15px]">{item.name}</span>
                 <span className="font-semibold">{item.price}</span>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

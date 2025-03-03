@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const BestSellersProducts = () => {
     const [bestSeller, setBestSeller] = useState([]);
@@ -30,7 +31,7 @@ const BestSellersProducts = () => {
       <div className="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-5 pt-10">
       {bestSeller.map((item, index) => {
           return (
-            <div key={index} className="cursor-pointer shadow-md pb-1">
+            <Link to={`/product-detail/${item._id}`} key={index} className="cursor-pointer shadow-md pb-1">
               <div className="overflow-hidden transition-all">
                 <img
                   src={item.productImage}
@@ -42,7 +43,7 @@ const BestSellersProducts = () => {
                 <span className="text-[15px]">{item.name}</span>
                 <span className="font-semibold">{item.price}</span>
               </div>
-            </div>
+            </Link>
           );
         })}
         

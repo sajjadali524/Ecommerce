@@ -1,23 +1,7 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
-const CollectionsProductsCard = () => {
-  const [allproducts, setAllProducts] = useState([]);
-  useEffect(() => {
-    const fetchAllProducts = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:8000/api/v1/product/get-all-products"
-        );
-        setAllProducts(response.data.products);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchAllProducts();
-  }, [allproducts]);
-
+const CollectionsProductsCard = ({products = []}) => {
   return (
     <div className="w-full lg:py-0 md:py-0 py-10 lg:mt-28 md:mt-28 mt-0">
       <div className="flex items-center justify-between">
@@ -39,7 +23,7 @@ const CollectionsProductsCard = () => {
 
       {/* products  */}
       <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2 gap-5 pt-10">
-        {allproducts.map((item, index) => {
+        {products.map((item, index) => {
           return (
             <Link
               to={`/product-detail/${item._id}`}
@@ -63,6 +47,10 @@ const CollectionsProductsCard = () => {
       </div>
     </div>
   );
+};
+
+CollectionsProductsCard.propTypes = {
+  products: PropTypes.object.isRequired,
 };
 
 export default CollectionsProductsCard;
