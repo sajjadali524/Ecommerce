@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const CollectionsProductsCard = ({products = []}) => {
+const CollectionsProductsCard = ({products = [], setSort}) => {
+  const handleSortChange = (e) => {
+    setSort(e.target.value)
+  };
+
   return (
     <div className="w-full lg:py-0 md:py-0 py-10 lg:mt-28 md:mt-28 mt-0">
       <div className="flex items-center justify-between">
@@ -13,10 +17,10 @@ const CollectionsProductsCard = ({products = []}) => {
         </div>
 
         <div>
-          <select className="outline-none border border-slate-600 p-2 text-[14px] font-medium cursor-pointer">
-            <option className="text-[10px]">Sort by: Relevant</option>
-            <option className="text-[10px]">Sort by: Low to High</option>
-            <option className="text-[10px]">Sort by: High to Low</option>
+          <select className="outline-none border border-slate-600 p-2 text-[14px] font-medium cursor-pointer" onChange={handleSortChange}>
+            <option className="text-[10px]" value="">Sort by: Relevant</option>
+            <option className="text-[10px]" value="Low to High">Sort by: Low to High</option>
+            <option className="text-[10px]" value="High to Low">Sort by: High to Low</option>
           </select>
         </div>
       </div>
@@ -51,6 +55,7 @@ const CollectionsProductsCard = ({products = []}) => {
 
 CollectionsProductsCard.propTypes = {
   products: PropTypes.object.isRequired,
+  setSort: PropTypes.func.isRequired,
 };
 
 export default CollectionsProductsCard;

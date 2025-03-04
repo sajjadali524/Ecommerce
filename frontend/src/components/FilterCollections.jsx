@@ -1,11 +1,15 @@
 import PropTypes from "prop-types";
 
-const FilterCollections = ({setCategory}) => {
+const FilterCollections = ({setCategory, setType}) => {
   const category = ["MEN", "WOMEN", "KIDS"];
   const types = ["Topwear", "Bottomwear", "Winterwear"];
-  const handleCheckboxChange = (e) => {
+  const handleCategoryChange = (e) => {
     const { value, checked } = e.target;
-    setCategory(checked ? value : ""); // Reset to "" to show all products if unchecked
+    setCategory(checked ? value : "");
+  };
+  const handleTypeChange = (e) => {
+    const { value, checked } = e.target;
+    setType(checked ? value : "");
   };
 
   return (
@@ -18,7 +22,7 @@ const FilterCollections = ({setCategory}) => {
             category.map((category, index) => {
               return(
                 <div key={index} className="flex items-center gap-2">
-            <input type="checkbox" value={category.toLowerCase()} onChange={handleCheckboxChange} />
+            <input type="checkbox" value={category.toLowerCase()} onChange={handleCategoryChange} />
             <label className="text-[14px] opacity-80">{category}</label>
           </div>
               )
@@ -33,7 +37,7 @@ const FilterCollections = ({setCategory}) => {
             types.map((type, index) => {
               return(
                 <div key={index} className="flex items-center gap-2">
-            <input type="checkbox" value="types" />
+            <input type="checkbox" value={type.toLowerCase()} onChange={handleTypeChange} />
             <label className="text-[14px] opacity-80">{type}</label>
           </div>
               )
@@ -47,6 +51,7 @@ const FilterCollections = ({setCategory}) => {
 
 FilterCollections.propTypes = {
   setCategory: PropTypes.func.isRequired,
+  setType: PropTypes.func.isRequired,
 };
 
 export default FilterCollections;

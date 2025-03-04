@@ -145,12 +145,42 @@ export const getAllProducts = async (req, res) => {
     }
 };
 
-// get all products a to z filter by category
+// get all products A to Z filter by category and sort by price
 export const filterProductByCategory = async (req, res) => {
-    const { category } = req.query;
+    const { category, type, sort } = req.query;
+
     try {
-        const filter = category ? {category: {$regex: new RegExp(category, "i")}} : {};
-        const products = await Product.find(filter).sort({createdAt: -1});
+        const filter = {};
+        if (category) {
+            filter.category = { $regex: new RegExp(category, "i") };
+        }
+        if (type) {
+            filter.type = { $regex: new RegExp(type, "i") };
+        }
+
+        const sortOption = {};
+        if (sort === "Low to High") {
+            sortOption.numericPrice = 1;
+        } else if (sort === "High to Low") {
+            sortOption.numericPrice = -1;
+        } else {
+            sortOption.createdAt = -1;
+        }
+
+        const products = await Product.aggregate([
+            { $match: filter },
+            {
+                $addFields: {
+                    numericPrice: {
+                        $toDouble: {
+                            $substr: ["$price", 1, -1] // Convert "$100" to 100
+                        }
+                    }
+                }
+            },
+            { $sort: sortOption }
+        ]);
+
         if (!products.length) {
             return res.status(404).json({ message: "Products not found" });
         }
@@ -160,3 +190,4 @@ export const filterProductByCategory = async (req, res) => {
         return res.status(500).json({ message: "Internal Server error" });
     }
 };
+
