@@ -10,20 +10,22 @@ const Collections = () => {
   const [sort, setSort] = useState("");
 
   useEffect(() => {
-    const filterProducts = async() => {
+    const filterProducts = async () => {
       try {
         const query = new URLSearchParams({
           category,
           type,
-          sort
+          sort,
         }).toString();
-        const response = await axios.get(`http://localhost:8000/api/v1/product/filter-product?${query}`);
-        console.log("filter: ", response.data.products)
-        setProducts(response.data.products)
+        const response = await axios.get(
+          `http://localhost:8000/api/v1/product/filter-product?${query}`
+        );
+        console.log("filter: ", response.data.products);
+        setProducts(response.data.products);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
     filterProducts();
   }, [category, type, sort]);
 
@@ -32,7 +34,7 @@ const Collections = () => {
       <FilterCollections setCategory={setCategory} setType={setType} />
       <CollectionsProductsCard products={products} setSort={setSort} />
     </div>
-  )
+  );
 };
 
 export default Collections;

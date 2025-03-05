@@ -12,8 +12,6 @@ const ListItems = () => {
     getAllProducts();
   }, []);
 
-  console.log(allProduct)
-
   const deleteProduct = async (id) => {
     try {
       await axios.delete(`http://localhost:8000/api/v1/product/delete-product/${id}`, {withCredentials: true});

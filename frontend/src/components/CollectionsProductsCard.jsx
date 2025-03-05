@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 
-const CollectionsProductsCard = ({products = [], setSort}) => {
+const CollectionsProductsCard = ({ products = [], setSort }) => {
   const handleSortChange = (e) => {
-    setSort(e.target.value)
+    setSort(e.target.value);
   };
 
   return (
@@ -17,10 +17,19 @@ const CollectionsProductsCard = ({products = [], setSort}) => {
         </div>
 
         <div>
-          <select className="outline-none border border-slate-600 p-2 text-[14px] font-medium cursor-pointer" onChange={handleSortChange}>
-            <option className="text-[10px]" value="">Sort by: Relevant</option>
-            <option className="text-[10px]" value="Low to High">Sort by: Low to High</option>
-            <option className="text-[10px]" value="High to Low">Sort by: High to Low</option>
+          <select
+            className="outline-none border border-slate-600 p-2 text-[14px] font-medium cursor-pointer"
+            onChange={handleSortChange}
+          >
+            <option className="text-[10px]" value="">
+              Sort by: Relevant
+            </option>
+            <option className="text-[10px]" value="Low to High">
+              Sort by: Low to High
+            </option>
+            <option className="text-[10px]" value="High to Low">
+              Sort by: High to Low
+            </option>
           </select>
         </div>
       </div>
