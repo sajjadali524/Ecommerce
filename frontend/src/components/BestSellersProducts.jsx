@@ -11,7 +11,6 @@ const BestSellersProducts = () => {
           "http://localhost:8000/api/v1/product/get-bestseller-product"
         );
         setBestSeller(response.data.products);
-        console.log(bestSeller)
       } catch (error) {
         console.log(error);
       }

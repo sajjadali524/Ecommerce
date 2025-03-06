@@ -1,6 +1,7 @@
 import { navLinks } from "./headerLinks";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { cart, login, search, navbar } from "../../constants/images";
+import { BiLogOut } from "react-icons/bi";
 import "../../index.css";
 import { useState } from "react";
 import SearchBox from "../SearchBox";
@@ -13,16 +14,20 @@ const Header = () => {
   const token = window.localStorage.getItem("token");
 
   const handleSearchBox = () => {
-    setISSearchBoxVisible(true)
+    setISSearchBoxVisible(true);
   };
 
   const logoutUser = async () => {
     try {
-      await axios.post("http://localhost:8000/api/v1/user/logout", {}, {withCredentials: true})
+      await axios.post(
+        "http://localhost:8000/api/v1/user/logout",
+        {},
+        { withCredentials: true }
+      );
       window.localStorage.removeItem("token");
-      window.location.href = "/"
+      window.location.href = "/";
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
 
@@ -50,13 +55,21 @@ const Header = () => {
         </ul>
 
         <div className="flex items-center gap-3">
-          {location.pathname === "/collection" && <button onClick={handleSearchBox}>
-            <img src={search} alt="image" className="w-6 cursor-pointer" />
-          </button> }
-          {token ? <button className="bg-slate-700 text-white px-4 rounded-md py-1" onClick={logoutUser}>Logout</button> :
-          <Link to="/login">
-            <img src={login} alt="image" className="w-6" />
-          </Link> }
+          {location.pathname === "/collection" && (
+            <button onClick={handleSearchBox}>
+              <img src={search} alt="image" className="w-6 cursor-pointer" />
+            </button>
+          )}
+          {token ? (
+            <BiLogOut
+              className="text-[23px] cursor-pointer"
+              onClick={logoutUser}
+            />
+          ) : (
+            <Link to="/login">
+              <img src={login} alt="image" className="w-6" />
+            </Link>
+          )}
           <div className="relative">
             <Link to="/cart">
               <img src={cart} alt="image" className="w-6" />
@@ -68,8 +81,10 @@ const Header = () => {
         </div>
       </div>
 
-       {/* search box  */}
-      {isSearchBoxVisible && <SearchBox searchBoxClose={setISSearchBoxVisible} /> }
+      {/* search box  */}
+      {isSearchBoxVisible && (
+        <SearchBox searchBoxClose={setISSearchBoxVisible} />
+      )}
 
       {/* mobile view  */}
 
@@ -96,12 +111,21 @@ const Header = () => {
             className="flex items-center gap-3"
             onClick={() => setIsOpen(false)}
           >
-            <button>
-              <img src={search} alt="image" className="w-6 cursor-pointer" />
-            </button>
-            <Link to="/login">
-              <img src={login} alt="image" className="w-6" />
-            </Link>
+            {location.pathname === "/collection" && (
+              <button onClick={handleSearchBox}>
+                <img src={search} alt="image" className="w-6 cursor-pointer" />
+              </button>
+            )}
+            {token ? (
+              <BiLogOut
+                className="text-[23px] cursor-pointer"
+                onClick={logoutUser}
+              />
+            ) : (
+              <Link to="/login">
+                <img src={login} alt="image" className="w-6" />
+              </Link>
+            )}
             <div className="relative">
               <Link to="/cart">
                 <img src={cart} alt="image" className="w-6" />

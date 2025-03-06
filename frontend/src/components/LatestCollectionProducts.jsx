@@ -16,7 +16,7 @@ const LatestCollectionProducts = () => {
       }
     };
     getLatestCollections();
-  }, []);
+  }, [latestProduct]);
 
   return (
     <div className="lg:py-20 md:py-20 py-10 lg:px-32 md:px-32 px-3">

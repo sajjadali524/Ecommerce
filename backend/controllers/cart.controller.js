@@ -3,11 +3,11 @@ import { Product } from "../models/product.model.js";
 
 // add product to cart 
 export const addToCart = async (req, res) => {
-    const {productId, quantity} = req.body;
+    const {productId, quantity, size} = req.body;
     const userId = req.user.id;
     try {
-        if(!productId || quantity <= 0) {
-            return res.status(400).json({message: "Invalid product or quantity"})
+        if(!productId || quantity <= 0 || !size) {
+            return res.status(400).json({message: "Invalid product or quantity and size"})
         }
 
         const product = await Product.findById(productId);
@@ -25,7 +25,7 @@ export const addToCart = async (req, res) => {
             });
         };
 
-        const existingItem = cart.items.find((item) => item.productId.equals(productId));
+        const existingItem = cart.items.find((item) => item.productId.equals(productId) && item.size.includes(size));
 
         if(existingItem) {
             existingItem.quantity += quantity;
@@ -33,14 +33,18 @@ export const addToCart = async (req, res) => {
             cart.items.push({
                 productId: product._id,
                 name: product.name,
-                image: product.image,
+                image: product.image || "",
                 price: product.price,
+                size: size,
                 quantity: quantity
             });
         };
         
         cart.totalItems = cart.items.reduce((sum, item) => sum + item.quantity, 0);
-        cart.totalPrice = cart.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        cart.totalPrice = cart.items.reduce((sum, item) => {
+            const price = Number(item.price.replace(/[^0-9.]/g, "")); // Removes non-numeric characters
+            return sum + (price * (item.quantity || 0));
+          }, 0);
         await cart.save();
 
 
