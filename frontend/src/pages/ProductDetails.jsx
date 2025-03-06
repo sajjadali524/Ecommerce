@@ -2,12 +2,15 @@ import { useParams } from "react-router-dom";
 import RelatedProducts from "../components/RelatedProducts";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../components/redux/slices/cartSlice";
 
 const ProductDetails = () => {
   const [productDetail, setProductDetail] = useState();
   const [selectedSize, setSelectedSize] = useState("");
   const [quantity, setQuantity] = useState("");
   const { id } = useParams();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProductDetail = async () => {
@@ -29,6 +32,11 @@ const ProductDetails = () => {
 
   const addProductToCart = async () => {
     const token = window.localStorage.getItem("token");
+    if(!token) {
+      alert("please login to add product");
+      window.location.href = "/login"
+      return;
+    }
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/cart/add-to-cart",
@@ -44,7 +52,7 @@ const ProductDetails = () => {
           withCredentials: true,
         }
       );
-      console.log(response.data);
+      dispatch(addToCart(response.data.cart))
     } catch (error) {
       console.log(error);
     }
@@ -61,7 +69,7 @@ const ProductDetails = () => {
 
             <div className="lg:w-1/2 w-full space-y-3 py-3">
               <h1 className="text-20 font-semibold">{productDetail.name}</h1>
-              <h3 className="text-20 font-semibold">{productDetail.price}</h3>
+              <h3 className="text-20 font-semibold">${productDetail.price}</h3>
               <p className="opacity-70">{productDetail.description}</p>
               <h2 className="font-semibold text-[15px]">Quantity</h2>
               <input

@@ -52,7 +52,7 @@ const CollectionsProductsCard = ({ products = [], setSort }) => {
               </div>
               <div className="flex flex-col px-1 py-3 space-y-1">
                 <span className="text-[15px]">{item.name}</span>
-                <span className="font-semibold">{item.price}</span>
+                <span className="font-semibold">${item.price}</span>
               </div>
             </Link>
           );

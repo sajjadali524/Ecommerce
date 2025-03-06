@@ -3,8 +3,9 @@ import { Cart } from "../models/cart.model.js";
 
 // place order (user)
 export const placeOrder = async (req, res) => {
-    const {firstName, lastName, email, street, city, state, zipcode, country, phone, paymentMethod, paymentStatus} = req.body;
+    const {firstName, lastName, email, street, city, zipcode, country, phone, payment, paymentStatus} = req.body;
     const userId = req.user.id;
+    console.log(req.body)
     try {
         const cart = await Cart.findOne({userId});
         if(!cart || cart.items.length === 0) {
@@ -15,7 +16,7 @@ export const placeOrder = async (req, res) => {
             productId: item.productId,
             name: item.name,
             price: item.price,
-            image: item.image || "",
+            image: item.productImage || "",
             quantity: item.quantity
         })));
 
@@ -31,12 +32,11 @@ export const placeOrder = async (req, res) => {
                 email,
                 street,
                 city,
-                state,
                 zipcode,
                 country,
                 phone
             },
-            paymentMethod,
+            paymentMethod: payment,
             paymentStatus,
             totalPrice,
         });

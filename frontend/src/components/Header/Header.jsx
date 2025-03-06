@@ -6,12 +6,15 @@ import "../../index.css";
 import { useState } from "react";
 import SearchBox from "../SearchBox";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isSearchBoxVisible, setISSearchBoxVisible] = useState(false);
   const location = useLocation();
   const token = window.localStorage.getItem("token");
+  const { totalItems } = useSelector((state) => state.cart);
+
 
   const handleSearchBox = () => {
     setISSearchBoxVisible(true);
@@ -74,7 +77,7 @@ const Header = () => {
             <Link to="/cart">
               <img src={cart} alt="image" className="w-6" />
               <span className="absolute left-[50%] top-[40%] bg-black rounded-full flex items-center justify-center text-white font-semibold w-4 h-4 text-[10px]">
-                0
+                {totalItems}
               </span>
             </Link>
           </div>
@@ -130,7 +133,7 @@ const Header = () => {
               <Link to="/cart">
                 <img src={cart} alt="image" className="w-6" />
                 <span className="absolute left-[50%] top-[40%] bg-black rounded-full flex items-center justify-center text-white font-semibold w-4 h-4 text-[10px]">
-                  0
+                  {totalItems}
                 </span>
               </Link>
             </div>

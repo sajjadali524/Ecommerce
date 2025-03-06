@@ -17,7 +17,7 @@ const cartSchema = new mongoose.Schema({
                 type: String,
                 required: true
             },
-            image: {
+            productImage: {
                 type: String,
                 required: true
             },
@@ -27,7 +27,7 @@ const cartSchema = new mongoose.Schema({
                 default: 1
             },
             price: {
-                type: String,
+                type: Number,
                 required: true,
                 default: 0
             },

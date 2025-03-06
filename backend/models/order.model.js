@@ -23,7 +23,7 @@ const orderSchema = new mongoose.Schema({
             },
             image: {
                 type: String,
-                // required: true
+                required: true
             },
             quantity: {
                 type: Number,
@@ -52,10 +52,6 @@ const orderSchema = new mongoose.Schema({
             type: String,
             required: true
         },
-        state: {
-            type: String,
-            required: true
-        },
         zipcode: {
             type: String,
             required: true
@@ -71,8 +67,9 @@ const orderSchema = new mongoose.Schema({
     },
     paymentMethod: {
         type: String,
-        enum: ["Card", "Paypal", "COD"],
-        required: true
+        enum: ["stripe", "cod"],
+        required: true,
+        default: "cod"
     },
     paymentStatus: {
         type: String,

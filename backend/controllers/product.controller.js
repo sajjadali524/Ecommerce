@@ -23,10 +23,9 @@ export const addProduct = async (req, res) => {
             stream.end(req.file.buffer);
         });
 
-        const formattedPrice = price.startsWith('$') ? price : `$${price.trim()}`;
-
-        const product = new Product({name, description, price: formattedPrice, category, type, productImage: result.secure_url, productSizes: productSizes, bestSeller});
+        const product = new Product({name, description, price, category, type, productImage: result.secure_url, productSizes: productSizes, bestSeller});
         await product.save();
+
         return res.status(200).json({message: "Product added Successfully", product});
     } catch (error) {
         return res.status(500).json({message: "Internal Server error", error});
@@ -160,26 +159,14 @@ export const filterProductByCategory = async (req, res) => {
 
         const sortOption = {};
         if (sort === "Low to High") {
-            sortOption.numericPrice = 1;
+            sortOption.price = 1;
         } else if (sort === "High to Low") {
-            sortOption.numericPrice = -1;
+            sortOption.price = -1;
         } else {
             sortOption.createdAt = -1;
         }
 
-        const products = await Product.aggregate([
-            { $match: filter },
-            {
-                $addFields: {
-                    numericPrice: {
-                        $toDouble: {
-                            $substr: ["$price", 1, -1] // Convert "$100" to 100
-                        }
-                    }
-                }
-            },
-            { $sort: sortOption }
-        ]);
+        const products = await Product.find(filter).sort(sortOption);
 
         if (!products.length) {
             return res.status(404).json({ message: "Products not found" });
