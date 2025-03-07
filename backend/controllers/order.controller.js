@@ -22,6 +22,7 @@ export const placeOrder = async (req, res) => {
 
         
         const totalPrice = cart.totalPrice;
+        const totalQuantity = cart.totalItems;
 
         const order = new Order({
             userId,
@@ -39,6 +40,7 @@ export const placeOrder = async (req, res) => {
             paymentMethod: payment,
             paymentStatus,
             totalPrice,
+            totalQuantity
         });
 
         await order.save();
@@ -101,13 +103,16 @@ export const updateOrderStatus = async (req, res) => {
     const { paymentStatus } = req.body;
     const {id} = req.params;
     try {
-        const updateOrder = await Order.findOne({_id: id, userId: req.user.id});
+        const updateOrder = await Order.findByIdAndUpdate(id, {paymentStatus}, {new: true});
 
-        if(!updateOrder || updateOrder.paymentStatus === "Delivered") {
-            return res.status(400).json({message: "order does not exist or Delivered"});
+        if (!updateOrder) {
+            return res.status(400).json({ message: "Order does not exist" });
         }
         
-        updateOrder.paymentStatus = paymentStatus;
+        if (updateOrder.paymentStatus === "Delivered") {
+            return res.status(400).json({ message: "Order is already delivered" });
+        }        
+        
         await updateOrder.save();
         return res.status(200).json({message: "order status updated", updateOrder});
     } catch (error) {

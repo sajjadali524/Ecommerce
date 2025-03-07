@@ -33,7 +33,6 @@ const Cart = () => {
 
         {items.length > 0 ? (
           <div>
-            {" "}
             {items.map((item) => {
               return (
                 <div

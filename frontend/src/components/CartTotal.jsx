@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { useState } from "react";
@@ -13,6 +13,7 @@ const CartTotal = ({inputData}) => {
     const dispatch = useDispatch();
     const isPlaceOrder = useLocation();
     const { totalPrice } = useSelector((state) => state.cart);
+    const navigate = useNavigate();
 
     const handleInput = (e) => {
         setUserInput({...userInput, [e.target.name]: e.target.value});
@@ -21,6 +22,7 @@ const CartTotal = ({inputData}) => {
     const orderPlaced = async () => {
         const token = window.localStorage.getItem("token");
         try {
+            console.log(userInput)
             const response = await axios.post("http://localhost:8000/api/v1/order/place-order", userInput, 
                 {
                     headers: {
@@ -32,6 +34,7 @@ const CartTotal = ({inputData}) => {
             if (response.status === 200) {
                 dispatch(clearCart());
                 console.log("Order placed successfully:", response.data);
+                navigate("/my-order")
             }
         } catch (error) {
             console.log(error)

@@ -11,7 +11,7 @@ router.get("/get-order", isAuthenticated, hasRole(["user"]), fetchMyOrders);
 router.delete("/delete-order/:id", isAuthenticated, hasRole(["user"]), deleteOrderFromCart);
 
  // admin
-router.get("/get-all-order", isAuthenticated, hasRole(["user"]), fetchAllOrdersAdmin);
+router.get("/get-all-order", isAuthenticated, hasRole(["admin"]), fetchAllOrdersAdmin);
 router.patch("/update-order/:id", isAuthenticated, hasRole(["admin"]), updateOrderStatus);
 
 export default router;

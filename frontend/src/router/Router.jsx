@@ -12,6 +12,7 @@ import Orders from "../pages/admin/Orders";
 import Layout from "../components/admin/Layout";
 import PlaceOrder from "../pages/PlaceOrder";
 import PageNotFound from "../pages/PageNotFound";
+import Myorder from "../pages/Myorder";
 
 const Router = () => {
   const isAdmin = Boolean(window.localStorage.getItem("admin"));
@@ -26,6 +27,7 @@ const Router = () => {
           <Route path="/product-detail/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/place-order" element={<PlaceOrder />} />
+          <Route path="/my-order" element={<Myorder />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/*" element={<PageNotFound />} />
