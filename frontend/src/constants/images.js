@@ -7,3 +7,4 @@ export { default as homeHerobg1 } from "../assets/images/bg/bg1.jpg";
 export { default as homeHerobg2 } from "../assets/images/bg/bg2.jpg";
 export { default as homeHerobg3 } from "../assets/images/bg/bg3.jpg";
 export { default as product } from "../assets/images/product_1.png";
+export { default as about_image } from "../assets/images/product_25.png";

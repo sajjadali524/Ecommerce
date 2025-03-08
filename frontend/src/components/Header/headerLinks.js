@@ -8,15 +8,7 @@ export const navLinks = [
         path: "/collection"
     },
     {
-        title: "Men",
-        path: "/men"
-    },
-    {
-        title: "Women",
-        path: "/women"
-    },
-    {
-        title: "Kids",
-        path: "/kids"
+        title: "About",
+        path: "/about-us"
     },
 ];

@@ -20,7 +20,6 @@ const Collections = () => {
         const response = await axios.get(
           `http://localhost:8000/api/v1/product/filter-product?${query}`
         );
-        console.log("filter: ", response.data.products);
         setProducts(response.data.products);
       } catch (error) {
         console.log(error);

@@ -65,7 +65,7 @@ const Cart = () => {
                   />
                 </div>
               );
-            })}{" "}
+            })}
           </div>
         ) : (
           <h1 className="pt-10 text-[17px]">Cart is empty!</h1>

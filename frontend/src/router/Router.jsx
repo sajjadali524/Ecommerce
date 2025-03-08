@@ -13,9 +13,11 @@ import Layout from "../components/admin/Layout";
 import PlaceOrder from "../pages/PlaceOrder";
 import PageNotFound from "../pages/PageNotFound";
 import Myorder from "../pages/Myorder";
+import About from "../pages/About";
 
 const Router = () => {
   const isAdmin = Boolean(window.localStorage.getItem("admin"));
+  const token = Boolean(window.localStorage.getItem("token"));
 
   return (
     <Routes>
@@ -24,10 +26,11 @@ const Router = () => {
         <>
           <Route path="/" element={<Home />} />
           <Route path="/collection" element={<Collections />} />
+          <Route path="/about-us" element={<About />} />
           <Route path="/product-detail/:id" element={<ProductDetails />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/place-order" element={<PlaceOrder />} />
-          <Route path="/my-order" element={<Myorder />} />
+          <Route path="/place-order" element={token ? <PlaceOrder /> : <PageNotFound />} />
+          <Route path="/my-order" element={token ? <Myorder /> : <PageNotFound />} />
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/*" element={<PageNotFound />} />

@@ -1,24 +1,16 @@
 import { navLinks } from "./headerLinks";
-import { Link, NavLink, useLocation } from "react-router-dom";
-import { cart, login, search, navbar } from "../../constants/images";
+import { Link, NavLink } from "react-router-dom";
+import { cart, login, navbar } from "../../constants/images";
 import { BiLogOut } from "react-icons/bi";
 import "../../index.css";
 import { useState } from "react";
-import SearchBox from "../SearchBox";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isSearchBoxVisible, setISSearchBoxVisible] = useState(false);
-  const location = useLocation();
   const token = window.localStorage.getItem("token");
   const { totalItems } = useSelector((state) => state.cart);
-
-
-  const handleSearchBox = () => {
-    setISSearchBoxVisible(true);
-  };
 
   const logoutUser = async () => {
     try {
@@ -55,14 +47,18 @@ const Header = () => {
               </li>
             );
           })}
+          {token && (
+            <NavLink
+              to="/my-order"
+              activeClassName="active"
+              className="font-[500]"
+            >
+              Myorder
+            </NavLink>
+          )}
         </ul>
 
         <div className="flex items-center gap-3">
-          {location.pathname === "/collection" && (
-            <button onClick={handleSearchBox}>
-              <img src={search} alt="image" className="w-6 cursor-pointer" />
-            </button>
-          )}
           {token ? (
             <BiLogOut
               className="text-[23px] cursor-pointer"
@@ -83,11 +79,6 @@ const Header = () => {
           </div>
         </div>
       </div>
-
-      {/* search box  */}
-      {isSearchBoxVisible && (
-        <SearchBox searchBoxClose={setISSearchBoxVisible} />
-      )}
 
       {/* mobile view  */}
 
@@ -114,11 +105,6 @@ const Header = () => {
             className="flex items-center gap-3"
             onClick={() => setIsOpen(false)}
           >
-            {location.pathname === "/collection" && (
-              <button onClick={handleSearchBox}>
-                <img src={search} alt="image" className="w-6 cursor-pointer" />
-              </button>
-            )}
             {token ? (
               <BiLogOut
                 className="text-[23px] cursor-pointer"

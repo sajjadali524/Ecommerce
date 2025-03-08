@@ -6,7 +6,7 @@ import Router from "./router/Router";
 const App = () => {
   const location = useLocation();
   const isProductDetailPage = /^\/product-detail\/[^/]+$/.test(location.pathname);
-  const showHeaderAndFooter = ["/", "/collection", "/login", "/register", "/about", "/contact-us", "/cart", "/place-order"];
+  const showHeaderAndFooter = ["/", "/collection", "/login", "/register", "/about", "/about-us", "/my-order", "/cart", "/place-order"];
   const shouldShowHeaderAndFooter = showHeaderAndFooter.includes(location.pathname) || isProductDetailPage;
   const isAdmin = window.localStorage.getItem("admin");
   return (
