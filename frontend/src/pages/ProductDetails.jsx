@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../components/redux/slices/cartSlice";
+import Loader from "../components/Loader";
+import { toast } from "react-toastify";
 
 const ProductDetails = () => {
   const [productDetail, setProductDetail] = useState();
@@ -11,6 +13,7 @@ const ProductDetails = () => {
   const [quantity, setQuantity] = useState("");
   const { id } = useParams();
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const getProductDetail = async () => {
@@ -37,6 +40,7 @@ const ProductDetails = () => {
       window.location.href = "/login"
       return;
     }
+    setLoading(true)
     try {
       const response = await axios.post(
         "http://localhost:8000/api/v1/cart/add-to-cart",
@@ -54,7 +58,9 @@ const ProductDetails = () => {
       );
       dispatch(addToCart(response.data.cart))
     } catch (error) {
-      console.log(error);
+      toast.error("Please select Size", error)
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -103,8 +109,9 @@ const ProductDetails = () => {
               <button
                 className="bg-slate-700 px-5 py-2 text-white hover:bg-slate-500"
                 onClick={addProductToCart}
+                disabled={loading}
               >
-                Add To Cart
+                {loading ? <Loader /> : "Add to Cart"}
               </button>
 
               <div className="opacity-70 space-y-2">
@@ -119,7 +126,9 @@ const ProductDetails = () => {
             </div>
           </>
         ) : (
-          <h1>Loading...</h1>
+          <div className="flex items-center justify-center w-full">
+            <Loader />
+          </div>
         )}
       </div>
 

@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useParams } from "react-router-dom";
+import Loader from "./Loader";
 
 const RelatedProducts = () => {
   const [relatedProduct, setRelatedProduct] = useState([]);
   const { id } = useParams();
+  const [loading, setLoading] = useState(false);
   
   useEffect(() => {
     const fetchRelatedProducts = async () => {
+      setLoading(true)
       try {
         const response = await axios.get(
           `http://localhost:8000/api/v1/product/product-detail/${id}`
@@ -15,6 +18,8 @@ const RelatedProducts = () => {
         setRelatedProduct(response.data.relatedProduct);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -57,7 +62,7 @@ const RelatedProducts = () => {
           })}
         </div>
       ) : (
-        <h1>No Related Product Found</h1>
+        loading ? <Loader /> : <h1>No Related Product Found</h1>
       )}
     </div>
   );

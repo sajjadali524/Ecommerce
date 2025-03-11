@@ -6,6 +6,7 @@ import {
   fetchCart,
   removeFromCart,
 } from "../components/redux/slices/cartSlice";
+import Loader from "../components/Loader";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const Cart = () => {
   };
 
   if (status === "loading") {
-    return <p>Loading cart...</p>;
+    return <Loader />;
   }
 
   return (

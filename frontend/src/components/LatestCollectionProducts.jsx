@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Loader from "./Loader";
 
 const LatestCollectionProducts = () => {
   const [latestProduct, setLatestProduct] = useState([]);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const getLatestCollections = async () => {
+      setLoading(true)
       try {
         const response = await axios.get(
           "http://localhost:8000/api/v1/product/get-latestcollection-product"
@@ -13,13 +17,15 @@ const LatestCollectionProducts = () => {
         setLatestProduct(response.data.products);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false)
       }
     };
     getLatestCollections();
-  }, [latestProduct]);
+  }, []);
 
   return (
-    <div className="lg:py-20 md:py-20 py-10 lg:px-32 md:px-32 px-3">
+    <div className={`${loading ? "lg:pt-20 md:pt-20 pt-10" : "lg:py-20 md:py-20 py-10"} lg:px-32 md:px-32 px-3`}>
       <div className="lg:text-center md:text-center text-left space-y-2">
         <div className="flex items-center lg:justify-center md:justify-center justify-start gap-3">
           <h1 className="font-semibold lg:text-[30px] md:text-[30px] text-[20px]">
@@ -32,7 +38,7 @@ const LatestCollectionProducts = () => {
         </p>
       </div>
 
-      <div className="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-5 pt-10">
+      {loading ? <div className="flex items-center justify-center w-full pt-10"><Loader /></div> : <div className="grid lg:grid-cols-5 md:grid-cols-4 grid-cols-2 gap-5 pt-10">
         {latestProduct.map((item, index) => {
           return (
             <Link to={`/product-detail/${item._id}`} key={index} className="cursor-pointer shadow-md pb-1">
@@ -50,7 +56,7 @@ const LatestCollectionProducts = () => {
             </Link>
           );
         })}
-      </div>
+      </div>}
     </div>
   );
 };

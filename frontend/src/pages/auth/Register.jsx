@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
+import Loader from "../../components/Loader";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +14,7 @@ const Register = () => {
     email: "",
     password: ""
   });
+  const [loading, setLoading] = useState(false)
 
   const handleUserInput = (e) => {
     setFormData({...formData, [e.target.name]: e.target.value})
@@ -19,12 +22,19 @@ const Register = () => {
 
   const registerUser = async (e) => {
     e.preventDefault();
+    setLoading(true)
     try {
       await axios.post("http://localhost:8000/api/v1/user/register", formData, {withCredentials: true})
       window.location.href = "/login";
       
     } catch (error) {
-      console.log(error)
+      if(!formData.first_name || !formData.last_name || !formData.date_of_birth || !formData.email || !formData.gender || !formData.gender || !formData.password) {
+        toast.error("All field are required", error)
+      }else {
+        toast.error("User Already Register")
+      }
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -94,8 +104,8 @@ const Register = () => {
         </div>
 
         <div>
-          <button className="bg-black text-white py-2 px-8 rounded-md hover:bg-slate-500">
-            Register
+          <button className="bg-black text-white py-2 px-8 rounded-md hover:bg-slate-500" disabled={loading}>
+            {loading ? <Loader /> : "Register"}
           </button>
         </div>
       </form>

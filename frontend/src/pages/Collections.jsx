@@ -8,9 +8,11 @@ const Collections = () => {
   const [category, setCategory] = useState("");
   const [type, setType] = useState("");
   const [sort, setSort] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const filterProducts = async () => {
+      setLoading(true)
       try {
         const query = new URLSearchParams({
           category,
@@ -23,6 +25,8 @@ const Collections = () => {
         setProducts(response.data.products);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false)
       }
     };
     filterProducts();
@@ -31,7 +35,7 @@ const Collections = () => {
   return (
     <div className="lg:flex md:flex block gap-10 lg:px-32 px-3 ">
       <FilterCollections setCategory={setCategory} setType={setType} />
-      <CollectionsProductsCard products={products} setSort={setSort} />
+      <CollectionsProductsCard products={products} setSort={setSort} loading={loading} />
     </div>
   );
 };

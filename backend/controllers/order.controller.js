@@ -1,5 +1,7 @@
 import { Order } from "../models/order.model.js";
 import { Cart } from "../models/cart.model.js";
+import Stripe from "stripe";
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
 
 // place order (user)
 export const placeOrder = async (req, res) => {
@@ -12,11 +14,16 @@ export const placeOrder = async (req, res) => {
             return res.status(400).json({message: "Cart is empty please add some product before placing oredr"});
         };
 
+        if(!firstName || !lastName || !email || !street || !city || !zipcode || !country || !phone || !payment) {
+            return res.status(404).json({message: "All fields are required"})
+        };
+
         const orderItems = cart.items.map((item => ({
             productId: item.productId,
             name: item.name,
             price: item.price,
             image: item.productImage || "",
+            size: item.size,
             quantity: item.quantity
         })));
 
@@ -119,3 +126,34 @@ export const updateOrderStatus = async (req, res) => {
         return res.status(500).json({message: "Internal server error", error})
     }
 };
+
+//pay from stripe
+export const payFromStripe = async (req, res) => {
+    const { items } = req.body;
+    try {
+        if (!items || !Array.isArray(items)) {
+            return res.status(400).json({ message: "Invalid items data" });
+        }
+  
+      const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        line_items: items.map(item => ({
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: item.name,
+            },
+            unit_amount: item.price * 100,
+        },
+        quantity: item.quantity,
+        })),
+        mode: 'payment',
+        success_url: 'http://localhost:5173/success',
+        cancel_url: 'http://localhost:5173/cancel',
+      });
+  
+      res.status(200).json({ sessionId: session.id });
+    } catch (err) {
+      res.status(500).json({ message: "Failed to create Stripe session" });
+    }
+  };

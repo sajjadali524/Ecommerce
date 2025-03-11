@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import Loader from "./Loader";
 
-const CollectionsProductsCard = ({ products = [], setSort }) => {
+const CollectionsProductsCard = ({ products = [], setSort, loading }) => {
   const handleSortChange = (e) => {
     setSort(e.target.value);
   };
@@ -35,7 +36,7 @@ const CollectionsProductsCard = ({ products = [], setSort }) => {
       </div>
 
       {/* products  */}
-      <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2 gap-5 pt-10">
+      {loading ? <div className="flex justify-center pt-40"><Loader /></div> : <div className="grid lg:grid-cols-4 md:grid-cols-4 grid-cols-2 gap-5 pt-10">
         {products.map((item, index) => {
           return (
             <Link
@@ -44,11 +45,11 @@ const CollectionsProductsCard = ({ products = [], setSort }) => {
               className="cursor-pointer shadow-md pb-1"
             >
               <div className="overflow-hidden transition-all">
-                <img
+                {loading ? <Loader /> : <img
                   src={item.productImage}
                   alt="image"
                   className="hover:scale-110"
-                />
+                />}
               </div>
               <div className="flex flex-col px-1 py-3 space-y-1">
                 <span className="text-[15px]">{item.name}</span>
@@ -57,7 +58,7 @@ const CollectionsProductsCard = ({ products = [], setSort }) => {
             </Link>
           );
         })}
-      </div>
+      </div>}
     </div>
   );
 };
@@ -65,6 +66,7 @@ const CollectionsProductsCard = ({ products = [], setSort }) => {
 CollectionsProductsCard.propTypes = {
   products: PropTypes.object.isRequired,
   setSort: PropTypes.func.isRequired,
+  loading: PropTypes.bool.isRequired,
 };
 
 export default CollectionsProductsCard;

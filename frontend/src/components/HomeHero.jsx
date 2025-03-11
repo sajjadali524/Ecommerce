@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { MdOutlineExpandLess } from "react-icons/md";
 import axios from "axios";
+import Loader from "./Loader";
 
 const HomeHero = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [allImages, setAllImages] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -17,6 +19,7 @@ const HomeHero = () => {
 
   useEffect(() => {
     const fetchHeaderImages = async () => {
+      setLoading(true)
       try {
         const response = await axios.get(
           "http://localhost:8000/api/v1/header/images"
@@ -24,6 +27,8 @@ const HomeHero = () => {
         setAllImages(response.data.headerImages);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false)
       }
     };
 
@@ -51,7 +56,7 @@ const HomeHero = () => {
         <MdOutlineExpandLess className="transform -rotate-90 font-bold text-[25px]" />
       </button>
 
-      {allImages.length > 0 && (
+      {loading ? <Loader /> : allImages.length > 0 && (
         <div className="w-full h-full transition-all">
           <img
             src={allImages[currentIndex]?.selectedImage}

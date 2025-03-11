@@ -3,7 +3,7 @@ import { Link, NavLink } from "react-router-dom";
 import { cart, login, navbar } from "../../constants/images";
 import { BiLogOut } from "react-icons/bi";
 import "../../index.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 
@@ -11,6 +11,10 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const token = window.localStorage.getItem("token");
   const { totalItems } = useSelector((state) => state.cart);
+
+  useEffect(() => {
+
+  }, [totalItems]);
 
   const logoutUser = async () => {
     try {
